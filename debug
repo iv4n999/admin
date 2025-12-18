@@ -1,1 +1,134 @@
+<?php
+/**
+ * Диагностика проблем (УДАЛИТЬ ПОСЛЕ ПРОВЕРКИ!)
+ */
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+echo "<h1>🔍 Диагностика сервера</h1>";
+echo "<style>body{font-family:Arial,sans-serif;padding:20px;} table{border-collapse:collapse;margin:20px 0;} td,th{border:1px solid #ccc;padding:10px;text-align:left;} .ok{color:green;} .err{color:red;}</style>";
+
+// 1. Информация о сервере
+echo "<h2>1. Информация о сервере</h2>";
+echo "<table>";
+echo "<tr><td>PHP версия</td><td>" . phpversion() . "</td></tr>";
+echo "<tr><td>Текущая директория</td><td>" . __DIR__ . "</td></tr>";
+echo "<tr><td>Document Root</td><td>" . $_SERVER['DOCUMENT_ROOT'] . "</td></tr>";
+echo "<tr><td>REQUEST_URI</td><td>" . $_SERVER['REQUEST_URI'] . "</td></tr>";
+echo "<tr><td>SCRIPT_NAME</td><td>" . $_SERVER['SCRIPT_NAME'] . "</td></tr>";
+echo "</table>";
+
+// 2. Проверка файлов в admin/
+echo "<h2>2. Файлы в папке admin/</h2>";
+echo "<table>";
+echo "<tr><th>Файл</th><th>Существует</th><th>Размер</th><th>Права</th><th>Читаемый</th></tr>";
+
+$files = ['index.php', 'login.php', 'logout.php', 'add.php', 'edit.php', 'delete.php', 'delete-city.php', 'cleanup.php', 'cities.php'];
+
+foreach ($files as $file) {
+    $path = __DIR__ . '/' . $file;
+    $exists = file_exists($path);
+    $size = $exists ? filesize($path) . ' байт' : '-';
+    $perms = $exists ? substr(sprintf('%o', fileperms($path)), -4) : '-';
+    $readable = $exists ? (is_readable($path) ? 'Да' : 'Нет') : '-';
+    
+    $class = $exists ? 'ok' : 'err';
+    $status = $exists ? '✅ Да' : '❌ Нет';
+    
+    echo "<tr>";
+    echo "<td>{$file}</td>";
+    echo "<td class='{$class}'>{$status}</td>";
+    echo "<td>{$size}</td>";
+    echo "<td>{$perms}</td>";
+    echo "<td>{$readable}</td>";
+    echo "</tr>";
+}
+echo "</table>";
+
+// 3. Все файлы в директории (реальные имена)
+echo "<h2>3. Реальные файлы в директории admin/</h2>";
+echo "<pre>";
+$allFiles = scandir(__DIR__);
+foreach ($allFiles as $f) {
+    if ($f !== '.' && $f !== '..') {
+        $fullPath = __DIR__ . '/' . $f;
+        $type = is_dir($fullPath) ? '📁' : '📄';
+        $size = is_file($fullPath) ? ' (' . filesize($fullPath) . ' bytes)' : '';
+        echo "{$type} {$f}{$size}\n";
+    }
+}
+echo "</pre>";
+
+// 4. Проверка includes/
+echo "<h2>4. Файлы в папке includes/</h2>";
+$includesPath = __DIR__ . '/../includes/';
+if (is_dir($includesPath)) {
+    echo "<pre>";
+    $incFiles = scandir($includesPath);
+    foreach ($incFiles as $f) {
+        if ($f !== '.' && $f !== '..') {
+            echo "📄 {$f}\n";
+        }
+    }
+    echo "</pre>";
+} else {
+    echo "<p class='err'>❌ Папка includes/ не найдена!</p>";
+}
+
+// 5. Проверка .htaccess
+echo "<h2>5. Проверка .htaccess</h2>";
+$htaccessPaths = [
+    __DIR__ . '/.htaccess',
+    __DIR__ . '/../.htaccess',
+    $_SERVER['DOCUMENT_ROOT'] . '/.htaccess'
+];
+
+foreach ($htaccessPaths as $htpath) {
+    echo "<h4>{$htpath}</h4>";
+    if (file_exists($htpath)) {
+        echo "<pre style='background:#f5f5f5;padding:10px;'>" . htmlspecialchars(file_get_contents($htpath)) . "</pre>";
+    } else {
+        echo "<p>Файл не существует</p>";
+    }
+}
+
+// 6. Тест ссылки на delete.php
+echo "<h2>6. Тест ссылок</h2>";
+echo "<p>Попробуйте нажать:</p>";
+echo "<ul>";
+echo "<li><a href='delete.php?id=999'>delete.php?id=999</a> (тест с несуществующим ID)</li>";
+echo "<li><a href='./delete.php?id=999'>./delete.php?id=999</a></li>";
+echo "<li><a href='/admin/delete.php?id=999'>/admin/delete.php?id=999</a></li>";
+echo "</ul>";
+
+// 7. Содержимое delete.php
+echo "<h2>7. Содержимое delete.php (первые 500 символов)</h2>";
+$deletePath = __DIR__ . '/delete.php';
+if (file_exists($deletePath)) {
+    $content = file_get_contents($deletePath);
+    echo "<pre style='background:#f5f5f5;padding:10px;'>" . htmlspecialchars(substr($content, 0, 500)) . "...</pre>";
+    
+    // Проверка на BOM
+    $bom = (substr($content, 0, 3) === "\xEF\xBB\xBF");
+    if ($bom) {
+        echo "<p class='err'>⚠️ Файл содержит BOM (Byte Order Mark) - это может вызывать проблемы!</p>";
+    }
+} else {
+    echo "<p class='err'>Файл не найден</p>";
+}
+
+// 8. URL который вызывает ошибку
+echo "<h2>8. Какой URL вызывает ошибку?</h2>";
+echo "<p>Скопируйте URL из адресной строки браузера когда появляется ошибка 404 и вставьте сюда:</p>";
+echo "<form method='get'><input type='text' name='test_url' size='60' placeholder='Вставьте проблемный URL'>";
+echo "<button type='submit'>Проверить</button></form>";
+
+if (isset($_GET['test_url'])) {
+    $testUrl = $_GET['test_url'];
+    echo "<p>Анализ URL: <code>{$testUrl}</code></p>";
+    $parsed = parse_url($testUrl);
+    echo "<pre>" . print_r($parsed, true) . "</pre>";
+}
+
+echo "<hr><p style='color:red;'><b>⚠️ УДАЛИТЕ ЭТОТ ФАЙЛ (debug.php) ПОСЛЕ ДИАГНОСТИКИ!</b></p>";
