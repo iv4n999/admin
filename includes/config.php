@@ -12,7 +12,7 @@ define('DB_PASS', '5NjSYC@2JWJ8NXMG');
 
 // Настройки админа
 define('ADMIN_LOGIN', 'admin');
-define('ADMIN_PASSWORD', 'ваш_сложный_пароль_123'); // ОБЯЗАТЕЛЬНО ИЗМЕНИТЕ!
+define('ADMIN_PASSWORD', 'o2C_9xw'); // ОБЯЗАТЕЛЬНО ИЗМЕНИТЕ!
 
 // Настройки сайта
 define('SITE_NAME', 'График отгрузок');
