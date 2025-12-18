@@ -1,1 +1,336 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    min-height: 100vh;
+    padding: 40px;
+    position: relative;
+    overflow-x: hidden;
+    background: 
+        linear-gradient(135deg, 
+            rgba(10, 25, 47, 0.95) 0%, 
+            rgba(20, 50, 80, 0.9) 30%,
+            rgba(15, 60, 70, 0.9) 60%,
+            rgba(10, 35, 50, 0.95) 100%
+        ),
+        #0a192f;
+}
+
+/* ===== БОКЕ ЭФФЕКТ ===== */
+.bokeh {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+.bokeh-light {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(3px);
+    animation: float 6s ease-in-out infinite;
+}
+.bokeh-light:nth-child(1) { width: 80px; height: 80px; background: radial-gradient(circle, rgba(255,215,0,0.4) 0%, transparent 70%); top: 10%; left: 5%; animation-delay: 0s; }
+.bokeh-light:nth-child(2) { width: 120px; height: 120px; background: radial-gradient(circle, rgba(255,100,100,0.3) 0%, transparent 70%); top: 20%; right: 10%; animation-delay: 1s; }
+.bokeh-light:nth-child(3) { width: 60px; height: 60px; background: radial-gradient(circle, rgba(100,200,255,0.4) 0%, transparent 70%); top: 50%; left: 8%; animation-delay: 2s; }
+.bokeh-light:nth-child(4) { width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,180,0,0.35) 0%, transparent 70%); top: 70%; right: 5%; animation-delay: 0.5s; }
+.bokeh-light:nth-child(5) { width: 70px; height: 70px; background: radial-gradient(circle, rgba(150,255,150,0.3) 0%, transparent 70%); bottom: 15%; left: 15%; animation-delay: 1.5s; }
+.bokeh-light:nth-child(6) { width: 90px; height: 90px; background: radial-gradient(circle, rgba(255,150,200,0.3) 0%, transparent 70%); top: 35%; left: 3%; animation-delay: 2.5s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+    50% { transform: translateY(-20px) scale(1.1); opacity: 1; }
+}
+
+/* ===== СНЕЖИНКИ ===== */
+.snow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 4;
+    overflow: hidden;
+}
+.snowflake {
+    position: absolute;
+    top: -50px;
+    color: white;
+    opacity: 0.8;
+    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+    animation: snowfall linear infinite;
+}
+@keyframes snowfall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+.snowflake:nth-child(1) { left: 3%; font-size: 18px; animation-duration: 15s; animation-delay: 0s; }
+.snowflake:nth-child(2) { left: 13%; font-size: 12px; animation-duration: 12s; animation-delay: 2s; }
+.snowflake:nth-child(3) { left: 23%; font-size: 20px; animation-duration: 18s; animation-delay: 4s; }
+.snowflake:nth-child(4) { left: 33%; font-size: 14px; animation-duration: 14s; animation-delay: 1s; }
+.snowflake:nth-child(5) { left: 43%; font-size: 16px; animation-duration: 16s; animation-delay: 3s; }
+.snowflake:nth-child(6) { left: 53%; font-size: 22px; animation-duration: 13s; animation-delay: 5s; }
+.snowflake:nth-child(7) { left: 63%; font-size: 10px; animation-duration: 17s; animation-delay: 2s; }
+.snowflake:nth-child(8) { left: 73%; font-size: 18px; animation-duration: 11s; animation-delay: 4s; }
+.snowflake:nth-child(9) { left: 83%; font-size: 15px; animation-duration: 19s; animation-delay: 1s; }
+.snowflake:nth-child(10) { left: 93%; font-size: 13px; animation-duration: 14s; animation-delay: 3s; }
+
+/* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, 
+        rgba(255,255,255,0.97) 0%, 
+        rgba(248,252,255,0.98) 50%,
+        rgba(255,253,250,0.97) 100%
+    );
+    border-radius: 24px;
+    box-shadow: 
+        0 25px 80px rgba(0,0,0,0.4),
+        0 0 0 1px rgba(255,255,255,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.9),
+        0 0 100px rgba(255,200,100,0.15);
+    padding: 40px 50px;
+    position: relative;
+    z-index: 10;
+    border: 1px solid rgba(180,140,80,0.3);
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    border: 2px solid rgba(180,140,60,0.2);
+    border-radius: 18px;
+    pointer-events: none;
+}
+
+/* ===== ЗАГОЛОВОК ===== */
+.header {
+    text-align: center;
+    margin-bottom: 35px;
+    padding-bottom: 30px;
+    position: relative;
+}
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #c9a227 20%, 
+        #f4d35e 50%, 
+        #c9a227 80%, 
+        transparent 100%
+    );
+    border-radius: 2px;
+}
+
+.header-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+    display: block;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+
+.header h1 {
+    color: #1a3a5c;
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.header h1 .year {
+    background: linear-gradient(135deg, #b8860b 0%, #daa520 50%, #b8860b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.header p {
+    color: #2e5a3a;
+    font-size: 18px;
+    font-weight: 500;
+}
+.header-stars {
+    margin-top: 15px;
+    font-size: 20px;
+    letter-spacing: 12px;
+    opacity: 0.8;
+}
+
+/* ===== СЕТКА ГОРОДОВ ===== */
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+/* ===== БЛОК ГОРОДА ===== */
+.city-block {
+    background: linear-gradient(180deg, #ffffff 0%, #f8faf8 100%);
+    border: 1px solid #c5d8c5;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 
+        0 4px 20px rgba(0,80,0,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+    transition: all 0.3s ease;
+}
+.city-block:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+        0 12px 35px rgba(0,80,0,0.15),
+        0 0 0 2px rgba(34,139,34,0.1);
+}
+
+.city-name {
+    background: linear-gradient(135deg, #1a472a 0%, #2d5a3d 50%, #1a472a 100%);
+    color: white;
+    padding: 14px 20px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    border-bottom: 2px solid rgba(255,215,0,0.3);
+}
+.city-name .icon {
+    font-size: 22px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+.city-name.special {
+    background: linear-gradient(135deg, #8b1538 0%, #a91e4a 50%, #8b1538 100%);
+}
+
+/* ===== ТАБЛИЦА ДАТ ===== */
+.dates-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.dates-table td {
+    padding: 11px 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #e8f0e8;
+    color: #2c3e50;
+    font-weight: 500;
+}
+.dates-table tr:last-child td { border-bottom: none; }
+.dates-table tr:nth-child(even) { background: rgba(34,139,34,0.03); }
+.dates-table tr:hover { background: rgba(255,215,0,0.08); }
+
+.date-from {
+    font-weight: 700;
+    color: #1565c0;
+}
+.arrow {
+    color: #2e7d32;
+    padding: 0 12px;
+    font-weight: bold;
+    font-size: 16px;
+}
+.date-to {
+    font-weight: 700;
+    color: #2e7d32;
+}
+.date-2026 {
+    color: #c41e3a;
+}
+
+/* ===== НЕТ ДАННЫХ ===== */
+.no-data {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-size: 18px;
+}
+
+/* ===== ФУТЕР ===== */
+.footer {
+    text-align: center;
+    margin-top: 35px;
+    padding-top: 30px;
+    position: relative;
+}
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #c9a227 20%, 
+        #f4d35e 50%, 
+        #c9a227 80%, 
+        transparent 100%
+    );
+    border-radius: 2px;
+}
+
+.footer-icons {
+    font-size: 40px;
+    margin-bottom: 18px;
+    letter-spacing: 15px;
+}
+.footer-text {
+    color: #1a472a;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.footer-subtext {
+    color: #5a7a6a;
+    font-size: 15px;
+}
+
+.last-update {
+    text-align: center;
+    margin-top: 20px;
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+    position: relative;
+    z-index: 10;
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 768px) {
+    body { padding: 15px; }
+    .container { padding: 20px 15px; }
+    .schedule-grid { grid-template-columns: 1fr; gap: 15px; }
+    .header h1 { font-size: 24px; }
+    .header-icon { font-size: 35px; }
+    .header p { font-size: 14px; }
+    .city-name { font-size: 12px; padding: 12px 15px; }
+    .dates-table td { padding: 10px 15px; font-size: 13px; }
+    .footer-icons { font-size: 30px; letter-spacing: 10px; }
+    .footer-text { font-size: 18px; }
+}
+
+@media (max-width: 480px) {
+    body { padding: 10px; }
+    .container { padding: 15px 10px; border-radius: 16px; }
+    .header h1 { font-size: 20px; }
+    .city-name { font-size: 11px; }
+    .dates-table td { padding: 8px 12px; font-size: 12px; }
+    .arrow { padding: 0 6px; }
+}
