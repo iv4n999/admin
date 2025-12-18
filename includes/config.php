@@ -7,8 +7,8 @@
 // Настройки базы данных (возьмите из панели SpaceWeb)
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'ваша_база');      // Например: u1234567_shipping
-define('DB_USER', 'ваш_пользователь'); // Например: u1234567_admin
-define('DB_PASS', 'ваш_пароль');
+define('DB_USER', 'ff77mskru'); // Например: u1234567_admin
+define('DB_PASS', '5NjSYC@2JWJ8NXMG');
 
 // Настройки админа
 define('ADMIN_LOGIN', 'admin');
